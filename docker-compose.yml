@@ -79,7 +79,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: pterodactyl
       MYSQL_USER: pterodactyl
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: pterodactyl
     networks:
       - pterodactyl
     healthcheck:
