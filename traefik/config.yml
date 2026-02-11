@@ -5,7 +5,7 @@ http:
     strip-proxy-prefix:
       stripPrefix:
         prefixes:
-          - /s3.minio.pterodactyl.test
+          - /s3.minio.reviactyl.test
     redirect-to-https:
       redirectScheme:
         scheme: https
@@ -24,7 +24,7 @@ http:
           - "HEAD"
           - "GET"
         accessControlAllowOriginList:
-          - "https://pterodactyl.test"
+          - "https://reviactyl.test"
         addVaryHeader: false
         frameDeny: false
         contentTypeNosniff: false
@@ -37,7 +37,7 @@ http:
   routers:
     pterodactyl:
       priority: 5
-      rule: Host(`pterodactyl.test`)
+      rule: Host(`reviactyl.test`)
       service: pterodactyl
       entryPoints:
         - https
@@ -46,19 +46,19 @@ http:
       tls:
         options: default
     wings:
-      rule: Host(`wings.pterodactyl.test`)
+      rule: Host(`wings.reviactyl.test`)
       service: wings
       tls:
         options: default
     minio:
-      rule: Host(`s3.minio.pterodactyl.test`)
+      rule: Host(`s3.minio.reviactyl.test`)
       service: minio
       middlewares:
         - minio-headers
       tls:
         options: default
     minioConsole:
-      rule: Host(`minio.pterodactyl.test`)
+      rule: Host(`minio.reviactyl.test`)
       service: minioConsole
       tls:
         options: default
@@ -84,5 +84,5 @@ tls:
     default:
       minVersion: VersionTLS12
   certificates:
-    - certFile: /etc/certs/pterodactyl.test.pem
-      keyFile: /etc/certs/pterodactyl.test-key.pem
+    - certFile: /etc/certs/reviactyl.test.pem
+      keyFile: /etc/certs/reviactyl.test-key.pem
