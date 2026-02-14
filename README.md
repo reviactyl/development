@@ -37,9 +37,8 @@ Wings environments respectively. Your Panel is accessible at `https://reviactyl.
 run through the normal setup process for the Panel if you do not have a database and environment setup
 already. This can be done by SSH'ing into the Panel environment and running `setup-reviactyl`, followed by configuring your .env file with either `php artisan` commands or editing the .env file manually to connect your database and redis services.
 
-The code for the setup can be found in `build/panel/setup-reviactyl`. Ensure you run `yarn serve` or
-`yarn build` before accessing the Panel. You can run `yarn` inside the container, or just in the `code/panel`
-directory on your host machine, assuming you have `node >= 22`.
+The code for the setup can be found in `build/panel/setup-reviactyl`. Ensure you run `yarn dev` before accessing the Panel.
+You should always run `yarn` inside the container.
 
 ### Running Wings
 You'll need to create a location and a node in the Panel instance before you can configure Wings. Set up the

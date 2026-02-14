@@ -25,24 +25,26 @@ RUN apt -y update \
     && echo "deb [signed-by=/etc/apt/trusted.gpg.d/sury-keyring.gpg] https://packages.sury.org/php/ bookworm main" | tee /etc/apt/sources.list.d/sury-php.list \
 	&& apt -y update \
     && apt -y --no-install-recommends install nodejs \
-      php8.2 \
-	  php8.2-cli \
-	  php8.2-common \
-	  php8.2-gd \
-	  php8.2-mysql \
-	  php8.2-mbstring \
-	  php8.2-bcmath \
-	  php8.2-xml \
-	  php8.2-fpm \
-	  php8.2-curl \
-	  php8.2-zip \
-	  php8.2-xdebug \
+      $PHP \
+	  $PHP-cli \
+	  $PHP-common \
+	  $PHP-gd \
+	  $PHP-mysql \
+	  $PHP-mbstring \
+	  $PHP-bcmath \
+	  $PHP-xml \
+	  $PHP-fpm \
+	  $PHP-curl \
+	  $PHP-zip \
+	  $PHP-xdebug \
+      $PHP-intl \
 	&& apt autoremove -y \
     && apt clean \
 	&& rm -rf /var/cache/apt/archives /var/cache/debconf /var/lib/apt/lists
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && npm i -g pnpm \
+    && npm i -g yarn \
     && rm -rf /etc/nginx/sites-enabled/* \
     && mkdir -p /var/run/php \
     && mkdir -p /var/www/html \
@@ -64,7 +66,7 @@ RUN (crontab -l 2>/dev/null; echo "* * * * * php /var/www/html/artisan schedule:
     && mv /etc/php/$PHP_VERSION/fpm/pool.d/www.conf /etc/php/$PHP_VERSION/fpm/pool.d/10-www.conf
 
 COPY ./build/panel/configs/supervisor /etc/supervisor
-COPY --chmod=700 ./build/panel/scripts/* /usr/local/bin
+COPY --chmod=777 ./build/panel/scripts/* /usr/local/bin
 
 EXPOSE 80 8080
 WORKDIR /var/www/html

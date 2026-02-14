@@ -35,6 +35,22 @@ http:
           Access-Control-Max-Age: "300"
           Vary: ""
   routers:
+    reviactyl-vite-ws:
+      priority: 15
+      rule: Host(`reviactyl.test`) && HeadersRegexp(`Connection`, `(?i)upgrade`) && HeadersRegexp(`Upgrade`, `(?i)websocket`)
+      service: reviactyl-vite
+      entryPoints:
+        - https
+      tls:
+        options: default
+    reviactyl-vite:
+      priority: 10
+      rule: Host(`reviactyl.test`) && (PathPrefix(`/@`) || PathPrefix(`/resources`) || PathPrefix(`/node_modules`))
+      service: reviactyl-vite
+      entryPoints:
+        - https
+      tls:
+        options: default
     reviactyl:
       priority: 5
       rule: Host(`reviactyl.test`)
@@ -67,6 +83,10 @@ http:
       loadBalancer:
         servers:
           - url: http://app:8080
+    reviactyl-vite:
+      loadBalancer:
+        servers:
+          - url: http://app:5173
     wings:
       loadBalancer:
         servers:

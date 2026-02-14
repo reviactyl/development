@@ -7,13 +7,46 @@ fi
 
 sed -i "s/APP_ENV=.*/APP_ENV=local/" .env
 sed -i "s/APP_DEBUG=.*/APP_DEBUG=true/" .env
+sed -i "s/APP_URL=.*/APP_URL=http:\/\/reviactyl.test/" .env
+sed -i "s/DB_HOST=.*/DB_HOST=mysql/" .env
+sed -i "s/DB_PORT=.*/DB_PORT=3306/" .env
+sed -i "s/DB_DATABASE=.*/DB_DATABASE=reviactyl/" .env
+sed -i "s/DB_USERNAME=.*/DB_USERNAME=reviactyl/" .env
+sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=reviactyl/" .env
+sed -i "s/REDIS_HOST=.*/REDIS_HOST=redis/" .env
+sed -i "s/CACHE_DRIVER=.*/CACHE_DRIVER=redis/" .env
+sed -i "s/SESSION_DRIVER=.*/SESSION_DRIVER=redis/" .env
+sed -i "s/QUEUE_CONNECTION=.*/QUEUE_CONNECTION=redis/" .env
 
 composer install --no-interaction --prefer-dist --no-scripts --no-progress
+echo "Installed composer dependencies."
 php artisan config:clear
+php artisan cache:clear
+php artisan view:clear
+php artisan route:clear
+php artisan optimize:clear
+php artisan key:generate --force
+php artisan migrate --force --seed
+echo "Ran database migrations and seeders."
 yarn install --no-progress
+echo "Installed yarn dependencies."
 
-sudo chown -R reviactyl:www-data storage bootstrap/cache
+sudo chown -R www-data:www-data storage bootstrap/cache
+sudo chmod -R 755 storage/* bootstrap/cache
 sudo find storage bootstrap/cache ! -name '*.gitignore' -exec chmod 755 {} +
+echo "Set permissions for storage and cache directories."
 
 sudo service cron restart
 sudo killall php-fpm8.2 php nginx 2>/dev/null || true
+echo "Creating an initial Administrator Account..."
+php artisan p:user:make --admin=1 --email=support@reviactyl.dev --username=reviactyl --name-first=Reviactyl --name-last=Development --password=reviactyl
+printf "%*s\n" $((32/2 + 10)) "================================"
+# Draw this text in the center of the terminal with a width of 32 characters
+printf "%*s\n" $((32/2 + 10)) "Reviactyl Panel Setup Complete"
+printf "%*s\n" $((32/2 + 10)) "================================"
+echo "Your login credentials are:"
+echo "Username: reviactyl"
+echo "Password: reviactyl"
+echo "You may now run \"yarn dev\" to start the development server or \"yarn build\" to build assets for production."
+echo "Access the panel at: https://reviactyl.test"
+echo "NOTE: Your browser may warn you about an untrusted certificate, this is expected as the development environment uses a self-signed certificate. You can safely ignore this warning for local development."

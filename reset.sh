@@ -11,8 +11,8 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     exit 0
 fi
 
-# Stop beak containers if they're running
-docker compose down
+# Stop beak containers if they're running and remove volumes
+docker compose down -v
 
 for REPO in "panel" "wings"
 do
