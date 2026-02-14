@@ -1,8 +1,8 @@
 FROM debian:12-slim
 
-LABEL maintainer="dane@daneeveritt.com" \
-	  description="Local development environment for Pterodactyl Panel." \
-	  org.opencontainers.image.source=https://github.com/pterodactyl/development
+LABEL maintainer="148823476+GunnableScum@users.noreply.github.com" \
+	  description="Local development environment for Reviactyl Panel." \
+	  org.opencontainers.image.source=https://github.com/reviactyl/development
 
 ARG TARGETARCHI
 ARG TARGETPLATFORM
@@ -47,20 +47,20 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     && mkdir -p /var/run/php \
     && mkdir -p /var/www/html \
     && sed -i 's/;daemonize = yes/daemonize = no/' /etc/php/$PHP_VERSION/fpm/php-fpm.conf \
-    && useradd -m pterodactyl \
-    && usermod -a -g www-data -G sudo pterodactyl \
+    && useradd -m reviactyl \
+    && usermod -a -g www-data -G sudo reviactyl \
     && echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" | tee /etc/sudoers.d/sudoers \
     && phpdismod xdebug \
     && rm -rf /tmp/*
 
 COPY ./build/panel/php/99-pool.conf /etc/php/$PHP_VERSION/fpm/pool.d/99-pool.conf
-COPY ./build/panel/php/99-pterodactyl.ini /etc/php/$PHP_VERSION/shared.d/99-pterodactyl.ini
-COPY ./build/panel/configs/pterodactyl.conf /etc/nginx/sites-available/pterodactyl.conf
+COPY ./build/panel/php/99-reviactyl.ini /etc/php/$PHP_VERSION/shared.d/99-reviactyl.ini
+COPY ./build/panel/configs/reviactyl.conf /etc/nginx/sites-available/reviactyl.conf
 
 RUN (crontab -l 2>/dev/null; echo "* * * * * php /var/www/html/artisan schedule:run >> /dev/null 2>&1") | crontab - \
-    && ln -s /etc/nginx/sites-available/pterodactyl.conf /etc/nginx/sites-enabled/ \
-    && ln -s /etc/php/$PHP_VERSION/shared.d/99-pterodactyl.ini /etc/php/$PHP_VERSION/fpm/99-pterodactyl.ini \
-    && ln -s /etc/php/$PHP_VERSION/shared.d/99-pterodactyl.ini /etc/php/$PHP_VERSION/cli/99-pterodactyl.ini \
+    && ln -s /etc/nginx/sites-available/reviactyl.conf /etc/nginx/sites-enabled/ \
+    && ln -s /etc/php/$PHP_VERSION/shared.d/99-reviactyl.ini /etc/php/$PHP_VERSION/fpm/99-reviactyl.ini \
+    && ln -s /etc/php/$PHP_VERSION/shared.d/99-reviactyl.ini /etc/php/$PHP_VERSION/cli/99-reviactyl.ini \
     && mv /etc/php/$PHP_VERSION/fpm/pool.d/www.conf /etc/php/$PHP_VERSION/fpm/pool.d/10-www.conf
 
 COPY ./build/panel/configs/supervisor /etc/supervisor

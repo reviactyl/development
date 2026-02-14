@@ -1,27 +1,23 @@
-[![Logo Image](https://cdn.pterodactyl.io/logos/new/pterodactyl_logo.png)](https://pterodactyl.io)
+[![Logo Image](https://github.com/user-attachments/assets/cd0dadaa-3b55-4f00-8e98-82a554c51712)](https://reviactyl.dev)
 
-# Pterodactyl Development
-This repository provides a `docker-compose` based environment for handling local development of Pterodactyl.
+# Reviactyl Development
+This repository provides a `docker-compose` based environment for handling local development of Reviactyl.
 
 **This is not meant for production use! This is a local development environment only.**
 
-> This environment is the official Pterodactyl development environment, in the sense that it is what
-I, [`@DaneEveritt`](https://github.com/DaneEveritt) use for working on it. I've not tested it on anything
-other than macOS, and I probably haven't documented most of the important bits. Please feel free to open
-PRs or Issues as necessary to improve this environment.
+> This environment was forked from [Pterodactyl's Development Repository](https://github.com/pterodactyl/development), which was made by [`@DaneEveritt`](https://github.com/DaneEveritt) and is used by them for Pterodactyl Development. This should work on both macOS and most Linux Machines. For Windows, you are on your own.
 
 ### Getting Started
 You'll need the following dependencies installed on your machine.
 
-* [Orbstack](https://orbstack.dev)
+* [Orbstack](https://orbstack.dev) **macOS only**
 * [mkcert](https://github.com/FiloSottile/mkcert)
 
 ### Setup
-To begin clone this repository to your system, and then run `./setup.sh` which will configure the
-additional git repositories, and setup your local certificates and host file routing.
+To begin clone this repository to your system, and then run `./setup.sh` which will configure the additional git repositories, and setup your local certificates and host file routing. If you do not have permission to write to the original repositories and want to contribute, please edit `setup.sh` to clone your forked repository instead to be able to commit your changes and submit a Pull Request in the future.
 
 ```sh
-git clone https://github.com/pterodactyl/development.git
+git clone https://github.com/reviactyl/development.git
 cd development
 ./setup.sh
 ```
@@ -37,11 +33,11 @@ Once you've setup the environment, simply run `./beak build` and then `./beak up
 `beak` aliases some common Docker compose commands, but everything else will pass through to `docker compose`.
 
 Once the environment is running, `./beak app` and `./beak wings` will allow SSH access to the Panel and
-Wings environments respectively. Your Panel is accessible at `https://pterodactyl.test`. You'll need to
+Wings environments respectively. Your Panel is accessible at `https://reviactyl.test`. You'll need to
 run through the normal setup process for the Panel if you do not have a database and environment setup
-already. This can be done by SSH'ing into the Panel environment and running `setup-pterodactyl`.
+already. This can be done by SSH'ing into the Panel environment and running `setup-reviactyl`, followed by configuring your .env file with either `php artisan` commands or editing the .env file manually to connect your database and redis services.
 
-The code for the setup can be found in `build/panel/setup-pterodactyl`. Ensure you run `yarn serve` or
+The code for the setup can be found in `build/panel/setup-reviactyl`. Ensure you run `yarn serve` or
 `yarn build` before accessing the Panel. You can run `yarn` inside the container, or just in the `code/panel`
 directory on your host machine, assuming you have `node >= 22`.
 
@@ -50,7 +46,8 @@ You'll need to create a location and a node in the Panel instance before you can
 node _as being "Behind Proxy"_ and set the `Daemon Port` value to 443. Copy over the resulting `config.yml`
 file to `/home/root/wings/config.yml` on the Wings dev container.
 
-When you write that file, update the `port` value in the file to be `8080` since we're doing some proxying
-for the environment with Traefik.
+When you write that file, update the `port` value in the file to be `8080` since traffic is being proxied for the environment with Traefik. Make sure that you use `wings.reviactyl.test` as the FQDN, otherwise you could run into issues.
 
 You should then be able to run `make debug` which will start the Wings daemon in debug mode.
+
+Be aware that future changes to the Node configuration could update the file.

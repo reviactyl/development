@@ -17,12 +17,12 @@ else
 fi
 
 ARGS=()
-PEXEC=(exec -u pterodactyl app)
+PEXEC=(exec -u reviactyl app)
 
 # Handle SSH into the container for the Panel.
 if [ "$1" == "app" ]; then
   shift 1
-  CONTAINER_USER=pterodactyl
+  CONTAINER_USER=reviactyl
   if [ "$1" == "root" ]; then
     CONTAINER_USER=root
   fi

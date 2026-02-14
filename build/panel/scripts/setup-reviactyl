@@ -12,7 +12,7 @@ composer install --no-interaction --prefer-dist --no-scripts --no-progress
 php artisan config:clear
 yarn install --no-progress
 
-sudo chown -R pterodactyl:www-data storage bootstrap/cache
+sudo chown -R reviactyl:www-data storage bootstrap/cache
 sudo find storage bootstrap/cache ! -name '*.gitignore' -exec chmod 755 {} +
 
 sudo service cron restart

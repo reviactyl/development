@@ -35,10 +35,10 @@ http:
           Access-Control-Max-Age: "300"
           Vary: ""
   routers:
-    pterodactyl:
+    reviactyl:
       priority: 5
       rule: Host(`reviactyl.test`)
-      service: pterodactyl
+      service: reviactyl
       entryPoints:
         - https
       middlewares:
@@ -63,7 +63,7 @@ http:
       tls:
         options: default
   services:
-    pterodactyl:
+    reviactyl:
       loadBalancer:
         servers:
           - url: http://app:8080

@@ -2,7 +2,7 @@
 set -o pipefail
 
 if [ -n "$WWWUSER" ]; then
-    usermod -u "$WWWUSER" pterodactyl || exit 1
+    usermod -u "$WWWUSER" reviactyl || exit 1
 fi
 
 cd /var/www/html || exit 1

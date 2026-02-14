@@ -6,7 +6,7 @@ api:
 providers:
   docker:
     watch: true
-    network: pterodactyl
+    network: reviactyl
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
   file:

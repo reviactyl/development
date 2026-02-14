@@ -6,9 +6,9 @@ services:
     networks:
       traefik:
         aliases:
-          - pterodactyl.test
-          - wings.pterodactyl.test
-          - s3.minio.pterodactyl.test
+          - reviactyl.test
+          - wings.reviactyl.test
+          - s3.minio.reviactyl.test
     ports:
       - "443:443"
       - "8080:8080"
@@ -24,7 +24,7 @@ services:
     stop_grace_period: '1s'
     networks:
       - traefik
-      - pterodactyl
+      - reviactyl
     depends_on:
       - redis
       - mysql
@@ -44,14 +44,14 @@ services:
     stdin_open: true
     networks:
       - traefik
-      - pterodactyl
+      - reviactyl
     ports:
       - "2022:2022"
     volumes:
       - ./code/wings:/home/root/wings
       - go_modules:/root/go
-      - /tmp/pterodactyl:/tmp/pterodactyl
-      - /var/lib/pterodactyl:/var/lib/pterodactyl
+      - /tmp/reviactyl:/tmp/reviactyl
+      - /var/lib/reviactyl:/var/lib/reviactyl
       - /var/run/docker.sock:/var/run/docker.sock:ro
     cap_add:
       - SYS_ADMIN
@@ -77,18 +77,18 @@ services:
       - ./docker/mysql:/docker-entrypoint-initdb.d:ro
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: pterodactyl
-      MYSQL_USER: pterodactyl
-      MYSQL_PASSWORD: pterodactyl
+      MYSQL_DATABASE: reviactyl
+      MYSQL_USER: reviactyl
+      MYSQL_PASSWORD: reviactyl
     networks:
-      - pterodactyl
+      - reviactyl
     healthcheck:
-      test: [ 'CMD', 'mysql', '-h', 'mysql', '-u', 'pterodactyl', '-ppterodactyl', '-e', 'quit' ]
+      test: [ 'CMD', 'mysql', '-h', 'mysql', '-u', 'reviactyl', '-previactyl', '-e', 'quit' ]
   redis:
     image: redis:alpine
     restart: unless-stopped
     networks:
-      - pterodactyl
+      - reviactyl
     healthcheck:
       test: [ 'CMD', 'redis-cli', 'ping' ]
   minio:
@@ -103,13 +103,21 @@ services:
       - 9001
     networks:
       - traefik
-      - pterodactyl
+      - reviactyl
     volumes:
       - minio:/data
 
 networks:
-  pterodactyl:
   traefik:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.25.0.0/16
+  reviactyl:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.26.0.0/16
 
 volumes:
   mysql:

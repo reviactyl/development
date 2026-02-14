@@ -17,8 +17,8 @@ mkcert reviactyl.test wings.reviactyl.test minio.reviactyl.test s3.minio.reviact
 
 # Because we're doing Docker-in-Docker we actually need these paths to line
 # up correctly with the host system.
-sudo mkdir -p /var/lib/pterodactyl
-sudo chown $(id -u):$(id -g) /var/lib/pterodactyl
+sudo mkdir -p /var/lib/reviactyl
+sudo chown $(id -u):$(id -g) /var/lib/reviactyl
 
 mv -v *reviactyl.test*-key.pem docker/certificates/reviactyl.test-key.pem || exit 1
 mv -v *reviactyl.test*.pem docker/certificates/reviactyl.test.pem || exit 1
